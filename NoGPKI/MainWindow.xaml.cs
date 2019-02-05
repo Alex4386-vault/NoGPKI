@@ -33,7 +33,7 @@ namespace NoGPKI
         public string gpkiPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"assets\\gpkiroot.cer");
         public X509Certificate2 gpkiCert;
 
-        public MainWindow()
+        public void OpenStores()
         {
             try
             {
@@ -42,10 +42,24 @@ namespace NoGPKI
                 lmauthrootstore.Open(OpenFlags.ReadWrite);
                 cuauthrootstore.Open(OpenFlags.ReadWrite);
             }
-            catch (CryptographicException e) {
-                MessageBox.Show("로컬 컴퓨터의 CA Root 인증서 RW 마운트 실패", "오류: 권한 부족", MessageBoxButton.OK, MessageBoxImage.Error);   
+            catch (CryptographicException e)
+            {
+                MessageBox.Show("로컬 컴퓨터의 CA Root 인증서 RW 마운트 실패", "오류: 권한 부족", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
             }
+        }
+
+        public void CloseStores()
+        {
+            lmstore.Close();
+            custore.Close();
+            lmauthrootstore.Close();
+            cuauthrootstore.Close();
+        }
+
+        public MainWindow()
+        {
+            OpenStores();
 
             if (!VerifyIsGPKI())
             {
@@ -146,6 +160,7 @@ namespace NoGPKI
 
         private void deleteCert_Click(object sender, RoutedEventArgs e)
         {
+            OpenStores();
             statusProgress.Value = 0;
             statusLabel.Content = "GPKI 인증서 삭제 확인";
             MessageBoxResult i = MessageBox.Show("정말로 인증서를 삭제하시겠습니까?", "인증서 삭제", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -185,10 +200,12 @@ namespace NoGPKI
                 statusProgress.Value = 0;
                 statusLabel.Content = "GPKI 인증서 삭제 취소";
             }
+            CloseStores();
         }
 
         private void recoverCert_Click(object sender, RoutedEventArgs e)
         {
+            OpenStores();
             statusProgress.Value = 0;
             statusLabel.Content = "GPKI 인증서 복구 확인";
             MessageBoxResult i = MessageBox.Show("정말로 인증서를 추가하시겠습니까?", "인증서 추가", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -228,6 +245,7 @@ namespace NoGPKI
                 statusProgress.Value = 0;
                 statusLabel.Content = "GPKI 인증서 복구 취소";
             }
+            CloseStores();
         }
     }
 }
