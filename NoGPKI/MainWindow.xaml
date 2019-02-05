@@ -17,8 +17,8 @@
 
         <GroupBox Header="관리패널" HorizontalAlignment="Left" Height="58" Margin="10,114,0,0" VerticalAlignment="Top" Width="219">
         </GroupBox>
-        <Button x:Name="deleteCert" Content="제거" HorizontalAlignment="Left" Height="24" Margin="25,140,0,0" VerticalAlignment="Top" Width="80"/>
-        <Button x:Name="recoverCert" Content="복구" HorizontalAlignment="Right" Height="24" Margin="0,140,28,0" VerticalAlignment="Top" Width="79"/>
+        <Button x:Name="deleteCert" Content="제거" HorizontalAlignment="Left" Height="24" Margin="25,140,0,0" VerticalAlignment="Top" Width="80" Click="deleteCert_Click"/>
+        <Button x:Name="recoverCert" Content="복구" HorizontalAlignment="Right" Height="24" Margin="0,140,28,0" VerticalAlignment="Top" Width="79" Click="recoverCert_Click"/>
         <ProgressBar x:Name="statusProgress" HorizontalAlignment="Left" Height="15" Margin="10,177,0,0" VerticalAlignment="Top" Width="219"/>
         <Label x:Name="statusLabel" Content="STATUS" HorizontalAlignment="Left" Margin="10,197,0,0" VerticalAlignment="Top" Width="219"/>
 
