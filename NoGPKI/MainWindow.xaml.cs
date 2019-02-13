@@ -65,6 +65,12 @@ namespace NoGPKI
 
             InitializeComponent();
 
+            checkGPKIstatus();
+        }
+
+        public void checkGPKIstatus()
+        {
+
             var lm_certs = lmban.Certificates.Find(X509FindType.FindByThumbprint, gpkiCert.Thumbprint, false);
             var cu_certs = cuban.Certificates.Find(X509FindType.FindByThumbprint, gpkiCert.Thumbprint, false);
 
@@ -72,6 +78,7 @@ namespace NoGPKI
             bool found_lmcerts = false;
             bool found_abnormality = false;
 
+            int err_certs = 0;
             if (lm_certs != null && lm_certs.Count > 0)
             {
                 if (lm_certs[0].PrivateKey == gpkiCert.PrivateKey)
@@ -81,7 +88,12 @@ namespace NoGPKI
                 else
                 {
                     found_abnormality = true;
+                    err_certs -= 0b0001; // -1, abnormality on lm
                 }
+            }
+            else
+            {
+                err_certs -= 0b0100; // -4, trusted on lm 
             }
 
             if (cu_certs != null && cu_certs.Count > 0)
@@ -93,19 +105,24 @@ namespace NoGPKI
                 else
                 {
                     found_abnormality = true;
+                    err_certs -= 0b0010; // -2, abnormality on cu
                 }
+            }
+            else
+            {
+                err_certs -= 0b1000; // -8, trusted on cu
             }
 
             if (found_cucerts || found_lmcerts)
             {
-                if(found_cucerts != found_lmcerts)
+                if (found_cucerts != found_lmcerts)
                 {
                     certStat.Content = "GPKI인증서를 불신, 일부만 적용됨";
                     statusLabel.Content = "준비 완료! 명령만 주세요!";
                 }
                 else
                 {
-                    certStat.Content = "비밀키가 일치하는 GPKI인증서 발견됨";
+                    certStat.Content = "비밀키가 일치하는 GPKI인증서 발견";
                     statusLabel.Content = "준비 완료! 명령만 주세요!";
                 }
             }
@@ -117,10 +134,15 @@ namespace NoGPKI
 
             if (found_abnormality)
             {
-
                 statusLabel.Content = "뭔가 이상해요! README를 읽어봐요!";
             }
-            
+
+            if(err_certs != 0)
+            {
+                // with partial untrust or with abnormality
+                // error code will be appended
+                certStat.Content += ("("+ err_certs + ")");
+            }
         }
 
         public void GPKICheckSumFail()
@@ -239,6 +261,8 @@ namespace NoGPKI
                 statusLabel.Content = "GPKI 인증서 신뢰 취소";
             }
             CloseStores();
+
+            checkGPKIstatus();
         }
 
         private void deleteCert_Click(object sender, RoutedEventArgs e)
@@ -300,6 +324,8 @@ namespace NoGPKI
                 statusLabel.Content = "GPKI 인증서 불신 취소";
             }
             CloseStores();
+
+            checkGPKIstatus();
         }
     }
 }
