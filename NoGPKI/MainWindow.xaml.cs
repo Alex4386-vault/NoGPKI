@@ -40,7 +40,7 @@ namespace NoGPKI
             }
             catch (CryptographicException e)
             {
-                MessageBox.Show("로컬 컴퓨터의 CA Root 인증서 RW 마운트 실패", "오류: 권한 부족", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("로컬 컴퓨터의 인증서 불신목록 RW 마운트 실패", "오류: 권한 부족", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
             }
         }
@@ -180,7 +180,7 @@ namespace NoGPKI
             return (0 == comparer.Compare(hashOfInput, hash));
         }
 
-        private void deleteCert_Click(object sender, RoutedEventArgs e)
+        private void recoverCert_Click(object sender, RoutedEventArgs e)
         {
             OpenStores();
             statusProgress.Value = 0;
@@ -196,21 +196,43 @@ namespace NoGPKI
                     GPKICheckSumFail();
                     return;
                 }
+
                 statusLabel.Content = "GPKI 인증서 신뢰 시작";
+
+                int err_trust = 0; // no errors
+                
+                statusLabel.Content = "LM 에서 인증서 신뢰중";
                 try
                 {
-                    statusLabel.Content = "LM 에서 인증서 신뢰중";
-                    cuban.Remove(gpkiCert);
-                    statusProgress.Value = 60;
-                    statusLabel.Content = "CU 에서 인증서 신뢰중";
-                    cuban.Remove(gpkiCert);
-                    statusProgress.Value = 80;
-                    statusLabel.Content = "GPKI 인증서 신뢰처리 완료";
-                    statusProgress.Value = 100;
-                } catch
-                {
-                    statusLabel.Content = "GPKI 인증서 처리중 예외 발생!";
+                    lmban.Remove(gpkiCert);
                 }
+                catch
+                {
+                    err_trust -= 0b0001;   // -1, lm removal fail
+                }
+                statusProgress.Value = 60;
+    
+                statusLabel.Content = "CU 에서 인증서 신뢰중";
+                try
+                {
+                    cuban.Remove(gpkiCert);
+                }
+                catch
+                {
+                    err_trust -= 0b0010;   // -2, cu removal fail
+                }
+                statusProgress.Value = 80;
+
+                if (err_trust == 0)
+                {
+                    statusLabel.Content = "GPKI 인증서 신뢰처리 완료";
+                }
+                else
+                {
+                    statusLabel.Content = "GPKI 인증서 신뢰중 예외 발생! ("+err_trust+")";
+                }
+                statusProgress.Value = 100;
+
             } else
             {
                 statusProgress.Value = 0;
@@ -219,7 +241,7 @@ namespace NoGPKI
             CloseStores();
         }
 
-        private void recoverCert_Click(object sender, RoutedEventArgs e)
+        private void deleteCert_Click(object sender, RoutedEventArgs e)
         {
             OpenStores();
             statusProgress.Value = 0;
@@ -235,21 +257,43 @@ namespace NoGPKI
                     GPKICheckSumFail();
                     return;
                 }
+
+                statusLabel.Content = "GPKI 인증서 불신 시작";
+
+                int err_ban = 0; // no errors
+
+                statusLabel.Content = "LM 에 인증서 불신중";                    
                 try
                 {
-                    statusLabel.Content = "GPKI 인증서 불신 시작";
-                    statusLabel.Content = "LM 에 인증서 불신중";
                     lmban.Add(gpkiCert);
-                    statusProgress.Value = 60;
-                    statusLabel.Content = "CU 에 인증서 불신중";
-                    cuban.Add(gpkiCert);
-                    statusProgress.Value = 80;
-                } catch
-                {
-
                 }
-                statusLabel.Content = "GPKI 인증서 불신 완료";
+                catch
+                {
+                    err_ban -= 0b0001;   // -1, lm ban fail
+                }
+                statusProgress.Value = 60;
+
+                statusLabel.Content = "CU 에 인증서 불신중";
+                try
+                {
+                    cuban.Add(gpkiCert);
+                }
+                catch
+                {
+                    err_ban -= 0b0010;   // -2, cu ban fail
+                }
+                statusProgress.Value = 80;
+                                
+                if (err_ban == 0)
+                {
+                    statusLabel.Content = "GPKI 인증서 불신 완료";
+                }
+                else
+                {
+                    statusLabel.Content = "GPKI 인증서 불신중 예외 발생! (" + err_ban + ")";
+                }
                 statusProgress.Value = 100;
+
             } else
             {
                 statusProgress.Value = 0;
