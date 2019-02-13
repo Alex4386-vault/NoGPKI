@@ -31,6 +31,12 @@ namespace NoGPKI
         public string gpkiPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"assets\\gpkiroot.cer");
         public X509Certificate2 gpkiCert;
 
+        public const int FLAG_FAIL_ON_LM = 0b0001;
+        public const int FLAG_FAIL_ON_CU = 0b0010;
+        public const int FLAG_TRUST_ON_LM = 0b0100;
+        public const int FLAG_TRUST_ON_CU = 0b1000;
+
+
         public void OpenStores()
         {
             try
@@ -88,12 +94,12 @@ namespace NoGPKI
                 else
                 {
                     found_abnormality = true;
-                    err_certs -= 0b0001; // -1, abnormality on lm
+                    err_certs -= FLAG_FAIL_ON_LM; // -1, abnormality on lm
                 }
             }
             else
             {
-                err_certs -= 0b0100; // -4, trusted on lm 
+                err_certs -= FLAG_TRUST_ON_LM; // -4, trusted on lm 
             }
 
             if (cu_certs != null && cu_certs.Count > 0)
@@ -105,12 +111,12 @@ namespace NoGPKI
                 else
                 {
                     found_abnormality = true;
-                    err_certs -= 0b0010; // -2, abnormality on cu
+                    err_certs -= FLAG_FAIL_ON_CU; // -2, abnormality on cu
                 }
             }
             else
             {
-                err_certs -= 0b1000; // -8, trusted on cu
+                err_certs -= FLAG_TRUST_ON_CU; // -8, trusted on cu
             }
 
             if (found_cucerts || found_lmcerts)
@@ -230,7 +236,7 @@ namespace NoGPKI
                 }
                 catch
                 {
-                    err_trust -= 0b0001;   // -1, lm removal fail
+                    err_trust -= FLAG_FAIL_ON_LM;   // -1, lm removal fail
                 }
                 statusProgress.Value = 60;
     
@@ -241,7 +247,7 @@ namespace NoGPKI
                 }
                 catch
                 {
-                    err_trust -= 0b0010;   // -2, cu removal fail
+                    err_trust -= FLAG_FAIL_ON_CU;   // -2, cu removal fail
                 }
                 statusProgress.Value = 80;
 
@@ -293,7 +299,7 @@ namespace NoGPKI
                 }
                 catch
                 {
-                    err_ban -= 0b0001;   // -1, lm ban fail
+                    err_ban -= FLAG_FAIL_ON_LM;   // -1, lm ban fail
                 }
                 statusProgress.Value = 60;
 
@@ -304,7 +310,7 @@ namespace NoGPKI
                 }
                 catch
                 {
-                    err_ban -= 0b0010;   // -2, cu ban fail
+                    err_ban -= FLAG_FAIL_ON_CU;   // -2, cu ban fail
                 }
                 statusProgress.Value = 80;
                                 
