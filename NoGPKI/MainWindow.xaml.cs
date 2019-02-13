@@ -68,22 +68,57 @@ namespace NoGPKI
             var lm_certs = lmban.Certificates.Find(X509FindType.FindByThumbprint, gpkiCert.Thumbprint, false);
             var cu_certs = cuban.Certificates.Find(X509FindType.FindByThumbprint, gpkiCert.Thumbprint, false);
 
-            if ((lm_certs != null && lm_certs.Count > 0) || (cu_certs != null && cu_certs.Count > 0))
+            bool found_cucerts = false;
+            bool found_lmcerts = false;
+            bool found_abnormality = false;
+
+            if (lm_certs != null && lm_certs.Count > 0)
             {
                 if (lm_certs[0].PrivateKey == gpkiCert.PrivateKey)
                 {
+                    found_lmcerts = true;
+                }
+                else
+                {
+                    found_abnormality = true;
+                }
+            }
+
+            if (cu_certs != null && cu_certs.Count > 0)
+            {
+                if (cu_certs[0].PrivateKey == gpkiCert.PrivateKey)
+                {
+                    found_cucerts = true;
+                }
+                else
+                {
+                    found_abnormality = true;
+                }
+            }
+
+            if (found_cucerts || found_lmcerts)
+            {
+                if(found_cucerts != found_lmcerts)
+                {
+                    certStat.Content = "GPKI인증서를 불신, 일부만 적용됨";
+                    statusLabel.Content = "준비 완료! 명령만 주세요!";
+                }
+                else
+                {
                     certStat.Content = "비밀키가 일치하는 GPKI인증서 발견됨";
                     statusLabel.Content = "준비 완료! 명령만 주세요!";
-                } else
-                {
-                    certStat.Content = "지문만 일치하는 GPKI인증서 발견됨";
-                    statusLabel.Content = "뭔가 이상해요! README를 읽어봐요!";
                 }
-                statusLabel.Content += (lm_certs != null && lm_certs.Count > 0) ? "(LM+)":" (LM)";
-            } else
+            }
+            else
             {
-                certStat.Content = "GPKI인증서가 발견되지 않음.";
+                certStat.Content = "GPKI인증서를 신뢰하고 있음";
                 statusLabel.Content = "준비 완료! 명령만 주세요!";
+            }
+
+            if (found_abnormality)
+            {
+
+                statusLabel.Content = "뭔가 이상해요! README를 읽어봐요!";
             }
             
         }
