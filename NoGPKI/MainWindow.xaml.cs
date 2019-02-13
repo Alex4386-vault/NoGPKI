@@ -88,8 +88,6 @@ namespace NoGPKI
             int err_certs = 0;
             if (lm_certs != null && lm_certs.Count > 0)
             {
-                Console.WriteLine(lm_certs[0].PrivateKey);
-                Console.WriteLine(gpkiCert.PrivateKey);
                 if (lm_certs[0].PrivateKey == gpkiCert.PrivateKey)
                 {
                     found_lmcerts = true;
