@@ -31,10 +31,10 @@ namespace NoGPKI
         public string gpkiPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"assets\\gpkiroot.cer");
         public X509Certificate2 gpkiCert;
 
-        public const int FLAG_FAIL_ON_LM = 0b0001;
-        public const int FLAG_FAIL_ON_CU = 0b0010;
-        public const int FLAG_TRUST_ON_LM = 0b0100;
-        public const int FLAG_TRUST_ON_CU = 0b1000;
+        public const int FLAG_FAIL_ON_LM = 0b0001;  // 1, used to flag fail on lm
+        public const int FLAG_FAIL_ON_CU = 0b0010;  // 2, used to flag fail on cu
+        public const int FLAG_TRUST_ON_LM = 0b0100; // 4, used to flag trust on lm
+        public const int FLAG_TRUST_ON_CU = 0b1000; // 8, used to flag trust on cu
 
 
         public void OpenStores()
