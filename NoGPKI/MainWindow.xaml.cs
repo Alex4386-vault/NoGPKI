@@ -59,8 +59,6 @@ namespace NoGPKI
 
         public MainWindow()
         {
-            OpenStores();
-
             if (!VerifyIsGPKI())
             {
                 GPKICheckSumFail();
@@ -71,11 +69,14 @@ namespace NoGPKI
 
             InitializeComponent();
 
+            // empty statusLabel on init;
+            statusLabel.Content = "";
             checkGPKIstatus();
         }
 
         public void checkGPKIstatus()
         {
+            OpenStores();
 
             var lm_certs = lmban.Certificates.Find(X509FindType.FindByThumbprint, gpkiCert.Thumbprint, false);
             var cu_certs = cuban.Certificates.Find(X509FindType.FindByThumbprint, gpkiCert.Thumbprint, false);
@@ -87,6 +88,8 @@ namespace NoGPKI
             int err_certs = 0;
             if (lm_certs != null && lm_certs.Count > 0)
             {
+                Console.WriteLine(lm_certs[0].PrivateKey);
+                Console.WriteLine(gpkiCert.PrivateKey);
                 if (lm_certs[0].PrivateKey == gpkiCert.PrivateKey)
                 {
                     found_lmcerts = true;
@@ -119,31 +122,34 @@ namespace NoGPKI
                 err_certs -= FLAG_TRUST_ON_CU; // -8, trusted on cu
             }
 
+            string msg_to_append = "";
             if (found_cucerts || found_lmcerts)
             {
                 if (found_cucerts != found_lmcerts)
                 {
                     certStat.Content = "GPKI인증서를 불신, 일부만 적용됨";
-                    statusLabel.Content = "준비 완료! 명령만 주세요!";
+                    msg_to_append = "준비 완료! 명령만 주세요!";
                 }
                 else
                 {
-                    certStat.Content = "비밀키가 일치하는 GPKI인증서 발견";
-                    statusLabel.Content = "준비 완료! 명령만 주세요!";
+                    certStat.Content = "비밀키 일치 GPKI인증서 불신중";
+                    msg_to_append = "준비 완료! 명령만 주세요!";
                 }
             }
             else
             {
                 certStat.Content = "GPKI인증서를 신뢰하고 있음";
-                statusLabel.Content = "준비 완료! 명령만 주세요!";
+                msg_to_append = "준비 완료! 명령만 주세요!";
             }
 
             if (found_abnormality)
             {
-                statusLabel.Content = "뭔가 이상해요! README를 읽어봐요!";
+                msg_to_append = "뭔가 이상해요! README를 읽어봐요!";
             }
+            statusLabel.Content += "\n";
+            statusLabel.Content += msg_to_append;
 
-            if(err_certs != 0)
+            if (err_certs != 0)
             {
                 // with partial untrust or with abnormality
                 // error code will be appended
