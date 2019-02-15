@@ -20,7 +20,7 @@ Distrusts GPKI Root CA Certificate because their security and certificate manage
 #### 행정전자서명인증서의 구조자체가 안전하지 않습니다.
 모든 GPKI인증서 발급 및, EPKI 인증서 발급이 각각 하나의 subCA에 몰려 있습니다.  
 이는 보안적으로 좋은 접근 방법이 아닙니다. 대부분의 인증서 발급 업체들은 Tree 구조로 만들어,  
-하나의 subCA 에 문제가 발생 했을 시, 해당 subCA에 대한 인증서를 통으로 revoke 할 수 있는 구조로 만들어 놓습니다.  
+하나의 subCA 에 문제가 발생 했을 시, rootCA에는 문제가 가지 않도록 설계합니다.    
 해당 사항으로 인해 Mozilla사에서는 해당 구조상 보안 취약점으로 인해 [2015년 11월 GPKI인증서를 Firefox에 추가하지 않았습니다.](https://bugzilla.mozilla.org/show_bug.cgi?format=default&id=1226100)
 앞에서 언급된 타 Root 인증서의 Tree 구조와는 다르게, 행정전자서명인증서의 경우 root CA에 subCA 를 할당하였기에, 해당 subCA에 문제가 생기면, GPKI 인증서 전체를 Revoke 해야 합니다.  
 더 심각한 점은, 이 Revoke 마저 정상적으로 처리되지 않습니다. 이는 3번째 "인증서상태프로토콜서버의 업타임이 저조하다" 항목에서 다루겠습니다.
