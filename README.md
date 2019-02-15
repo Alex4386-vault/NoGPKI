@@ -11,7 +11,7 @@ Distrusts GPKI Root CA Certificate because their security and certificate manage
 ## 한국어
 ### 왜 행정전자서명 인증서를 신뢰해서는 안되나요?
 
-대표적으로 가지가 있습니다.  
+대표적으로 세가지 이유가 있습니다.  
 
 1. 행정전자서명인증서의 구조자체가 안전하지 않습니다.
 2. 부정발급된 인증서가 너무 많습니다.
