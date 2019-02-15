@@ -28,6 +28,7 @@ namespace NoGPKI
         public X509Store cuban = new X509Store(StoreName.Disallowed, StoreLocation.CurrentUser);
         public X509Certificate2 gpki = new X509Certificate2();
         public string gpkiMD5 = "fa396a2bb384a05f3fa237609d68d516";
+        public string assetsPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets");
         public string gpkiPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"assets\\gpkiroot.cer");
         public X509Certificate2 gpkiCert;
 
@@ -57,11 +58,47 @@ namespace NoGPKI
             cuban.Close();
         }
 
+        public void outputGPKI()
+        {
+            if (!Directory.Exists(assetsPath))
+            {
+                Directory.CreateDirectory(assetsPath);
+            }
+            if (!File.Exists(gpkiPath))
+            {
+                File.WriteAllBytes(gpkiPath, Properties.Resources.gpkiroot);
+            }
+        }
+
+        public void deleteAndOutputGPKI()
+        {
+            if (Directory.Exists(assetsPath))
+            {
+                if (File.Exists(gpkiPath))
+                {
+                    try
+                    {
+                        File.Delete(gpkiPath);
+                    }
+                    catch
+                    {
+                        GPKICheckSumFail();
+                        this.Close();
+                    }
+                }
+            }
+            outputGPKI();
+        }
+
         public MainWindow()
         {
             if (!VerifyIsGPKI())
             {
-                GPKICheckSumFail();
+                deleteAndOutputGPKI();
+                if (!VerifyIsGPKI())
+                {
+                    GPKICheckSumFail();
+                }
                 this.Close();
             } else {
                 gpkiCert = new X509Certificate2(gpkiPath);
@@ -164,6 +201,10 @@ namespace NoGPKI
 
         public bool VerifyIsGPKI()
         {
+            if (!File.Exists(gpkiPath))
+            {
+                outputGPKI();
+            }
             MD5 md5Hash = MD5.Create();
             return VerifyMd5Hash(md5Hash, gpkiPath, gpkiMD5);
         }
