@@ -11,7 +11,7 @@ Distrusts GPKI Root CA Certificate because their security and certificate manage
 ## 한국어
 ### 왜 행정전자서명 인증서를 신뢰해서는 안되나요?
 
-대표적으로 두가지가 있습니다.  
+대표적으로 가지가 있습니다.  
 
 1. 행정전자서명인증서의 구조자체가 안전하지 않습니다.
 2. 부정발급된 인증서가 너무 많습니다.
@@ -104,3 +104,97 @@ NoGPKI는, 여러분이 GPKI인증서를 손쉽게 불신하도록 도와 드립
 ### 라이선스
 do What The Fuck you want to Public License (WTFPL) 로 배포되고 있습니다.  
 ~~이딴게 인증서냐 정부...~~
+
+## English
+### Reasons why you should NOT trust GPKI Root Certificates
+
+1. The structure of GPKI Root Certificate is extremely vulnerable.
+2. They have *literally* ***MASSIVE*** amount of misissued certificates.
+3. Their OCSP servers are usually offline.
+  
+#### The structure of GPKI Root Certificate is extremely vulnerable.
+GPKI Root Certificate is not using tree structure in their subCA system. which is highly vulnerable since one subCA issues almost all of the certificates.  
+due to this faulty design, this will cause serious problem while revoking subCA-wide certificates.  
+Plus, revoking will not work properly since they usually put their OCSP servers offline.
+
+#### They have *literally* ***MASSIVE*** amount of misissued certificates
+Please refer to these threads ( [Chromium Bug Thread](https://bugs.chromium.org/p/chromium/issues/detail?id=823665), [Mozilla Bugzilla thread](https://bugzilla.mozilla.org/show_bug.cgi?id=1377389#c32) ) for more details.  
+According to those bug threads, GPKI CARoot Certificate has been misissued certificate to these domains and IPs.
+
+* www.testssl.com (dadapro.com holds the domain, Not a korean government-owned domain, Misissued.)
+* www.ssltest.com (Existing domain, but for sale, and it is Not a korean government-owned domain, Misissued.)
+* test_btms.seoul.go.kr (there is no any single record on this domain, misissued.)
+* test.\*.pen.go.kr (wildcard in the middle, violation of CARoot Guidelines, Misissued)
+* test123.go.kr (there is no any single record on this domain, misissued.)
+* \*.test.co.kr (yeoman57@naver.com is owner, But server does not serve in https with *that* certificate, Seems to be misissued.)
+* arasun.test.co.kr (Same with above.)
+* www.test1111.co.kr (there is no any single record on this domain, misissued.)
+* www.\*.posan.ms.kr (wildcard in the middle, violation of CARoot Guidelines, Misissued)
+* e-csinfo.\*.go.kr (wildcard in the middle, violation of CARoot Guidelines, Misissued)
+* 210.178.100.164 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
+* 211.206.120.182 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
+* 27.101.205.4 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
+* 61.108.124.4 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
+* 210.179.139.131 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
+* 27.101.119.206 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
+* urk (Non-existent domain, Misissued)
+* eais (Non-existent domain, Misissued)
+* chs.cdc (Non-existent TLD, Misissued)
+* go.kr (Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)
+* [More certificates issued for IP Addresses](https://crt.sh/?icaid=123&dnsname=%25.___.___.%25)
+* real (Non-existent domain, Misissued)
+* cert.ust (Non-existent TLD, Misissued)
+* ac.kr (Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)
+* Too much certificate was issued for \*.ssem.or.kr, \*.serii.re.kr, \*.kkulbaksa.com   
+  
+These are the wildcard certificates at the second-level TLDs, which affects users of those TLDs.
+[Certification List at chromium bugs](https://bugs.chromium.org/p/chromium/issues/detail?id=823665#c17)  
+[crt.sh 216514419](https://crt.sh/?id=216514419)  
+[crt.sh 169761218](https://crt.sh/?id=169761218)  
+[crt.sh 140593669](https://crt.sh/?id=140593669)  
+[crt.sh 107698017](https://crt.sh/?id=107698017)  
+[crt.sh 93537384](https://crt.sh/?id=93537384)  
+[crt.sh 61150414](https://crt.sh/?id=61150414)  
+[crt.sh 61136851](https://crt.sh/?id=61136851)  
+[crt.sh 20687119](https://crt.sh/?id=20687119)  
+
+* \*.sc.kr (Wildcard Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)
+* \*.or.kr (Wildcard Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)
+* \*.kg.kr (Wildcard Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)
+* \*.hs.kr (Wildcard Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)
+* \*.ms.kr (Wildcard Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)
+* \*.es.kr (Wildcard Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)
+* \*.go.kr (Wildcard Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)  
+  
+***Wildcard certificates issued against *.co.kr***  
+
+[crt.sh 8169164](https://crt.sh/?id=8169164)  
+[crt.sh 6990343](https://crt.sh/?id=6990343)  
+[crt.sh 6797278](https://crt.sh/?id=6797278)  
+
+* \*.co.kr (Wildcard Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)
+  
+Spreadsheet data of misissued certificates until 2018-03-25: [여기](https://docs.google.com/spreadsheets/d/1gsaZcvLY0vwe2humZn_3E3y89huqjPyS_syTHQCqy1Q/edit?usp=sharing)
+
+Another Lists of Misissued Certificates: [1](https://bugzilla.mozilla.org/show_bug.cgi?id=1377389#c32) [2](https://bugzilla.mozilla.org/show_bug.cgi?id=1377389#c33)  
+
+#### Their OCSP servers are usually offline.
+In order to check certificates are valid or revoked, browsers usually accesses OCSP (Online Certificate Status Protocol) Server,  
+But since GPKI puts their OCSP servers usually offline, their misissued certificates can not be revoked. This means their certificates can NOT be trusted.
+
+### So What should I do?
+Linux, MacOS and Firefox (Windows) already removed trust to GPKI Certificate, but Microsoft Windows Platform still trusts it.  
+That's the reason NoGPKI kicked in, this program will help you to remove Korean GPKI Certificate easily.  
+
+*Warning. This software does NOT support English platform yet. so its interface is written in Korean. If you can localize, please make a PR out of it. Thank you.*
+1. Execute the Application. (Requires an administrator privilege)  
+2. Click Yes at the UAC Prompt (I don't have CodeSign Certificate, Sorry. ~~If you can, Please buy one for me ;(~~ )
+3. Click [제거] to distrust and click [복구] to trust again (since minwon24 and south korean government still uses it)
+4. Now, your computer is safe and great! Enjoy your internet!
+
+### Contributions
+Updated some code? Found some bug? PR and Bug reports are always welcome! Please leave an Issue about it!
+
+### LICENSE
+This program is distributed under do What The Fuck you want to Public License (WTFPL).  
+~~Seriously, Korean Government. Do YOU REALLY THINK THAT IS A VALID ROOT CERTIFICATE?~~
