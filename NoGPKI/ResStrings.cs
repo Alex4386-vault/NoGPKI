@@ -88,6 +88,11 @@ namespace NoGPKI
 
     internal class Korean : ResStrings
     {
+        public Korean()
+        {
+            this.initLang();
+        }
+
         private void initLang()
         {
             resStr[STR_ERR_MOUNT_FAIL] = "로컬 컴퓨터의 인증서 불신목록 RW 마운트 실패";
