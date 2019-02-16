@@ -48,7 +48,7 @@ namespace NoGPKI
             resStr[STR_ERR_NOT_AUTHORIZED] = "Error: Not authorized";
             resStr[STR_MSG_PARTIAL_DISTRUST] = "Distrusts GPKI, partially";
             resStr[STR_MSG_READY_FOR_CMD] = "I'm ready! Command me!";
-            resStr[STR_MSG_FULL_DISTRUST] = "Untrusts matching GPKI";
+            resStr[STR_MSG_FULL_DISTRUST] = "Distrusts matching GPKI";
             resStr[STR_MSG_FULLLY_TRUSTED] = "Trusts GPKI";
             resStr[STR_MSG_ABNORMALITY_FOUND] = "Somethings Wrong! Check README!";
             resStr[STR_ERR_MD5_CHECK_FAIL] = "Failure on MD5 checksums";
