@@ -35,15 +35,11 @@ namespace NoGPKI
         public const int STR_MSG_COMPLETED_DISTRUSTING = 23;
         public const int STR_ERR_WHILE_DISTRUST = 24;
         public const int STR_MSG_CANCELLED_DISTRUSTING = 25;
-
-        private void initLang()
-        {
-            
-        }
+        
 
         public ResStrings()
         {
-            initLang();
+            
         }
 
         // CultureInfo.ThreeLetterISOLanguage 를 이용한 시스템 UI 언어 판독
@@ -89,11 +85,6 @@ namespace NoGPKI
     internal class Korean : ResStrings
     {
         public Korean()
-        {
-            this.initLang();
-        }
-
-        private void initLang()
         {
             resStr[STR_ERR_MOUNT_FAIL] = "로컬 컴퓨터의 인증서 불신목록 RW 마운트 실패";
             resStr[STR_ERR_NOT_AUTHORIZED] = "오류: 권한 부족";
