@@ -44,7 +44,6 @@ namespace NoGPKI
         public ResStrings()
         {
             initLang();
-            setLanguage("kor");
         }
 
         // CultureInfo.ThreeLetterISOLanguage 를 이용한 시스템 UI 언어 판독

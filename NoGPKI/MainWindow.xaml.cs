@@ -37,7 +37,7 @@ namespace NoGPKI
         public const int FLAG_TRUST_ON_LM = 0b0100; // 4, used to flag trust on lm
         public const int FLAG_TRUST_ON_CU = 0b1000; // 8, used to flag trust on cu
 
-        private ResStrings strRes = new ResStrings();
+        private static readonly ResStrings strRes = new ResStrings();
 
         public void OpenStores()
         {
@@ -46,7 +46,7 @@ namespace NoGPKI
                 lmban.Open(OpenFlags.ReadWrite);
                 cuban.Open(OpenFlags.ReadWrite);
             }
-            catch (CryptographicException e)
+            catch (CryptographicException)
             {
                 MessageBox.Show(strRes.getStr(ResStrings.STR_ERR_MOUNT_FAIL), strRes.getStr(ResStrings.STR_ERR_NOT_AUTHORIZED), MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
@@ -93,6 +93,7 @@ namespace NoGPKI
 
         public MainWindow()
         {
+            strRes.setLanguage("kor");
             if (!VerifyIsGPKI())
             {
                 deleteAndOutputGPKI();
