@@ -37,6 +37,7 @@ namespace NoGPKI
         public const int FLAG_TRUST_ON_LM = 0b0100; // 4, used to flag trust on lm
         public const int FLAG_TRUST_ON_CU = 0b1000; // 8, used to flag trust on cu
 
+        private static readonly ResStrings strRes = new ResStrings();
 
         public void OpenStores()
         {
@@ -45,9 +46,9 @@ namespace NoGPKI
                 lmban.Open(OpenFlags.ReadWrite);
                 cuban.Open(OpenFlags.ReadWrite);
             }
-            catch (CryptographicException e)
+            catch (CryptographicException)
             {
-                MessageBox.Show("로컬 컴퓨터의 인증서 불신목록 RW 마운트 실패", "오류: 권한 부족", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(strRes.getStr(ResStrings.STR_ERR_MOUNT_FAIL), strRes.getStr(ResStrings.STR_ERR_NOT_AUTHORIZED), MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
             }
         }
@@ -92,6 +93,8 @@ namespace NoGPKI
 
         public MainWindow()
         {
+            strRes.setLanguage(System.Globalization.CultureInfo.CurrentUICulture.ThreeLetterISOLanguageName);
+
             if (!VerifyIsGPKI())
             {
                 deleteAndOutputGPKI();
@@ -105,6 +108,12 @@ namespace NoGPKI
             }
 
             InitializeComponent();
+
+            // fixed ui text by lang
+            noGpkiInfo.Text = strRes.getStr(ResStrings.STR_MSG_PRG_INFO);
+            grpPanel.Header = strRes.getStr(ResStrings.STR_MSG_PANEL_BUTTONS);
+            deleteCert.Content = strRes.getStr(ResStrings.STR_MSG_BUTTON_DELETE_CERT);
+            recoverCert.Content = strRes.getStr(ResStrings.STR_MSG_BUTTON_RECOVER_CERT);
 
             // empty statusLabel on init;
             statusLabel.Content = "";
@@ -162,24 +171,24 @@ namespace NoGPKI
             {
                 if (found_cucerts != found_lmcerts)
                 {
-                    certStat.Content = "GPKI인증서를 불신, 일부만 적용됨";
-                    msg_to_append = "준비 완료! 명령만 주세요!";
+                    certStat.Content = strRes.getStr(ResStrings.STR_MSG_PARTIAL_DISTRUST);
+                    msg_to_append = strRes.getStr(ResStrings.STR_MSG_READY_FOR_CMD);
                 }
                 else
                 {
-                    certStat.Content = "비밀키 일치 GPKI인증서 불신중";
-                    msg_to_append = "준비 완료! 명령만 주세요!";
+                    certStat.Content = strRes.getStr(ResStrings.STR_MSG_FULL_DISTRUST);
+                    msg_to_append = strRes.getStr(ResStrings.STR_MSG_READY_FOR_CMD);
                 }
             }
             else
             {
-                certStat.Content = "GPKI인증서를 신뢰하고 있음";
-                msg_to_append = "준비 완료! 명령만 주세요!";
+                certStat.Content = strRes.getStr(ResStrings.STR_MSG_FULLLY_TRUSTED);
+                msg_to_append = strRes.getStr(ResStrings.STR_MSG_READY_FOR_CMD);
             }
 
             if (found_abnormality)
             {
-                msg_to_append = "뭔가 이상해요! README를 읽어봐요!";
+                msg_to_append = strRes.getStr(ResStrings.STR_MSG_ABNORMALITY_FOUND);
             }
             statusLabel.Content += "\n";
             statusLabel.Content += msg_to_append;
@@ -194,8 +203,8 @@ namespace NoGPKI
 
         public void GPKICheckSumFail()
         {
-            MessageBox.Show("MD5 체크섬 검사 실패", "오류: 유효성 검사 실패", MessageBoxButton.OK, MessageBoxImage.Error);
-            MessageBox.Show("실행 경로아래에 assets\\gpkiroot.cer 파일이 있는지 확인 해 주시기 바랍니다.\n있다면, 파일이 손상된것 같습니다.", "오류: 유효성 검사 실패", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(strRes.getStr(ResStrings.STR_ERR_MD5_CHECK_FAIL), strRes.getStr(ResStrings.STR_ERR_VALIDATION_FAIL), MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(String.Format(strRes.getStr(ResStrings.STR_MSG_CHECK_FILE_IS_THERE), gpkiPath), strRes.getStr(ResStrings.STR_ERR_VALIDATION_FAIL), MessageBoxButton.OK, MessageBoxImage.Error);
             
         }
 
@@ -257,24 +266,24 @@ namespace NoGPKI
         {
             OpenStores();
             statusProgress.Value = 0;
-            statusLabel.Content = "GPKI 인증서 신뢰 확인";
-            MessageBoxResult i = MessageBox.Show("정말로 인증서를 신뢰하시겠습니까?", "인증서 신뢰", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            statusLabel.Content = strRes.getStr(ResStrings.STR_MSG_CHECK_TRUST);
+            MessageBoxResult i = MessageBox.Show(strRes.getStr(ResStrings.STR_MSG_CONFIRM_TRUST), strRes.getStr(ResStrings.STR_MSG_CHECK_TRUST), MessageBoxButton.YesNo, MessageBoxImage.Question);
             statusProgress.Value = 50;
             if (i == MessageBoxResult.Yes)
             {
-                statusLabel.Content = "GPKI 인증서 체크섬 검사 중";
+                statusLabel.Content = strRes.getStr(ResStrings.STR_MSG_CHECKING_CHECKSUM);
                 if (!VerifyIsGPKI())
                 {
-                    statusLabel.Content = "GPKI 인증서 체크섬 검사 실패!";
+                    statusLabel.Content = strRes.getStr(ResStrings.STR_ERR_CHECKSUM_FAIL);
                     GPKICheckSumFail();
                     return;
                 }
 
-                statusLabel.Content = "GPKI 인증서 신뢰 시작";
+                statusLabel.Content = strRes.getStr(ResStrings.STR_MSG_PROCESS_TRUST);
 
                 int err_trust = 0; // no errors
                 
-                statusLabel.Content = "LM 에서 인증서 신뢰중";
+                statusLabel.Content = String.Format(strRes.getStr(ResStrings.STR_MSG_TRUSTING_IN),"LM");
                 try
                 {
                     lmban.Remove(gpkiCert);
@@ -285,7 +294,7 @@ namespace NoGPKI
                 }
                 statusProgress.Value = 60;
     
-                statusLabel.Content = "CU 에서 인증서 신뢰중";
+                statusLabel.Content = String.Format(strRes.getStr(ResStrings.STR_MSG_TRUSTING_IN), "CU");
                 try
                 {
                     cuban.Remove(gpkiCert);
@@ -298,18 +307,18 @@ namespace NoGPKI
 
                 if (err_trust == 0)
                 {
-                    statusLabel.Content = "GPKI 인증서 신뢰처리 완료";
+                    statusLabel.Content = strRes.getStr(ResStrings.STR_MSG_COMPLETED_TRUSTING);
                 }
                 else
                 {
-                    statusLabel.Content = "GPKI 인증서 신뢰중 예외 발생! ("+err_trust+")";
+                    statusLabel.Content = String.Format(strRes.getStr(ResStrings.STR_ERR_WHILE_TRUST), err_trust);
                 }
                 statusProgress.Value = 100;
 
             } else
             {
                 statusProgress.Value = 0;
-                statusLabel.Content = "GPKI 인증서 신뢰 취소";
+                statusLabel.Content = strRes.getStr(ResStrings.STR_MSG_CANCELLED_TRUSTING);
             }
             CloseStores();
 
@@ -320,24 +329,24 @@ namespace NoGPKI
         {
             OpenStores();
             statusProgress.Value = 0;
-            statusLabel.Content = "GPKI 인증서 불신 확인";
-            MessageBoxResult i = MessageBox.Show("정말로 인증서를 불신하시겠습니까?", "인증서 불신", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            statusLabel.Content = strRes.getStr(ResStrings.STR_MSG_CHECK_DISTRUST);
+            MessageBoxResult i = MessageBox.Show(strRes.getStr(ResStrings.STR_MSG_CONFIRM_DISTRUST), strRes.getStr(ResStrings.STR_MSG_CHECK_DISTRUST), MessageBoxButton.YesNo, MessageBoxImage.Question);
             statusProgress.Value = 50;
             if (i == MessageBoxResult.Yes)
             {
-                statusLabel.Content = "GPKI 인증서 체크섬 검사 중";
+                statusLabel.Content = strRes.getStr(ResStrings.STR_MSG_CHECKING_CHECKSUM);
                 if (!VerifyIsGPKI())
                 {
-                    statusLabel.Content = "GPKI 인증서 체크섬 검사 실패!";
+                    statusLabel.Content = strRes.getStr(ResStrings.STR_ERR_CHECKSUM_FAIL);
                     GPKICheckSumFail();
                     return;
                 }
 
-                statusLabel.Content = "GPKI 인증서 불신 시작";
+                statusLabel.Content = strRes.getStr(ResStrings.STR_MSG_PROCESS_DISTRUST);
 
                 int err_ban = 0; // no errors
 
-                statusLabel.Content = "LM 에 인증서 불신중";                    
+                statusLabel.Content = String.Format(strRes.getStr(ResStrings.STR_MSG_DISTRUSTING_IN),"LM");                    
                 try
                 {
                     lmban.Add(gpkiCert);
@@ -348,7 +357,7 @@ namespace NoGPKI
                 }
                 statusProgress.Value = 60;
 
-                statusLabel.Content = "CU 에 인증서 불신중";
+                statusLabel.Content = String.Format(strRes.getStr(ResStrings.STR_MSG_DISTRUSTING_IN), "CU");
                 try
                 {
                     cuban.Add(gpkiCert);
@@ -361,18 +370,18 @@ namespace NoGPKI
                                 
                 if (err_ban == 0)
                 {
-                    statusLabel.Content = "GPKI 인증서 불신 완료";
+                    statusLabel.Content = strRes.getStr(ResStrings.STR_MSG_COMPLETED_DISTRUSTING);
                 }
                 else
                 {
-                    statusLabel.Content = "GPKI 인증서 불신중 예외 발생! (" + err_ban + ")";
+                    statusLabel.Content = String.Format(strRes.getStr(ResStrings.STR_ERR_WHILE_DISTRUST), err_ban);
                 }
                 statusProgress.Value = 100;
 
             } else
             {
                 statusProgress.Value = 0;
-                statusLabel.Content = "GPKI 인증서 불신 취소";
+                statusLabel.Content = strRes.getStr(ResStrings.STR_MSG_CANCELLED_DISTRUSTING);
             }
             CloseStores();
 

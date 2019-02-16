@@ -8,17 +8,16 @@
         Title="NoGPKI" Height="350" Width="250" ResizeMode="NoResize">
     <Grid>
         <TextBlock 
-            Text="이 프로그램은 정부의 행정전자서명
-                  인증관리센터에서 발급한 인증서의
-                  신뢰를 제거/복구하는 프로그램입니다."
+            x:Name="noGpkiInfo"
+            Text="NoGPKI_INFO"
             HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="214" Margin="10,10,10,0"/>
 
         <Label x:Name="certStat" Content="Label" HorizontalAlignment="Left" Height="27" Margin="10,70,0,0" VerticalAlignment="Top" Width="224"/>
 
-        <GroupBox Header="관리패널" HorizontalAlignment="Left" Height="58" Margin="10,114,0,0" VerticalAlignment="Top" Width="219">
+        <GroupBox x:Name="grpPanel"  Header="PANEL_BUTTONS" HorizontalAlignment="Left" Height="58" Margin="10,114,0,0" VerticalAlignment="Top" Width="219">
         </GroupBox>
-        <Button x:Name="deleteCert" Content="제거" HorizontalAlignment="Left" Height="24" Margin="25,140,0,0" VerticalAlignment="Top" Width="80" Click="deleteCert_Click"/>
-        <Button x:Name="recoverCert" Content="복구" HorizontalAlignment="Right" Height="24" Margin="0,140,28,0" VerticalAlignment="Top" Width="79" Click="recoverCert_Click"/>
+        <Button x:Name="deleteCert" Content="BTN_DELCERT" HorizontalAlignment="Left" Height="24" Margin="25,140,0,0" VerticalAlignment="Top" Width="80" Click="deleteCert_Click"/>
+        <Button x:Name="recoverCert" Content="BTN_RECCERT" HorizontalAlignment="Right" Height="24" Margin="0,140,28,0" VerticalAlignment="Top" Width="79" Click="recoverCert_Click"/>
         <ProgressBar x:Name="statusProgress" HorizontalAlignment="Left" Height="15" Margin="10,177,0,0" VerticalAlignment="Top" Width="219"/>
         <Label x:Name="statusLabel" Content="STATUS" HorizontalAlignment="Left" Margin="10,197,0,0" VerticalAlignment="Top" Width="219"/>
 

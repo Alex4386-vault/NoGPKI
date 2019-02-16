@@ -186,10 +186,9 @@ But since GPKI puts their OCSP servers usually offline, their misissued certific
 Linux, MacOS and Firefox (Windows) already removed trust to GPKI Certificate, but Microsoft Windows Platform still trusts it.  
 That's the reason NoGPKI kicked in, this program will help you to remove Korean GPKI Certificate easily.  
 
-*Warning. This software does NOT support English platform yet. so its interface is written in Korean. If you can localize, please make a PR out of it. Thank you.*
 1. Execute the Application. (Requires an administrator privilege)  
 2. Click Yes at the UAC Prompt (I don't have CodeSign Certificate, Sorry. ~~If you can, Please buy one for me ;(~~ )
-3. Click [제거] to distrust and click [복구] to trust again (since minwon24 and south korean government still uses it)
+3. Click [Delete] to distrust and click [Recover] to trust again (since minwon24 and south korean government still uses it)
 4. Now, your computer is safe and great! Enjoy your internet!
 
 ### Contributions
