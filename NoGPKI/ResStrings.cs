@@ -8,7 +8,7 @@ namespace NoGPKI
 {
     public class ResStrings
     {
-        internal string[] resStr = new string[26];
+        internal string[] resStr = new string[30];
         public const int STR_ERR_MOUNT_FAIL = 0;
         public const int STR_ERR_NOT_AUTHORIZED = 1;
         public const int STR_MSG_PARTIAL_DISTRUST = 2;
@@ -35,7 +35,12 @@ namespace NoGPKI
         public const int STR_MSG_COMPLETED_DISTRUSTING = 23;
         public const int STR_ERR_WHILE_DISTRUST = 24;
         public const int STR_MSG_CANCELLED_DISTRUSTING = 25;
-        
+        public const int STR_MSG_PRG_INFO = 26;
+        public const int STR_MSG_PANEL_BUTTONS = 27;
+        public const int STR_MSG_BUTTON_DELETE_CERT = 28;
+        public const int STR_MSG_BUTTON_RECOVER_CERT =29;
+
+
 
         public ResStrings()
         {
@@ -112,6 +117,10 @@ namespace NoGPKI
             resStr[STR_MSG_COMPLETED_DISTRUSTING] = "GPKI 인증서 불신 완료";
             resStr[STR_ERR_WHILE_DISTRUST] = "GPKI 인증서 불신중 예외 발생! ({0})";
             resStr[STR_MSG_CANCELLED_DISTRUSTING] = "GPKI 인증서 불신 취소";
+            resStr[STR_MSG_PRG_INFO] = "이 프로그램은 정부의 행정전자서명\n인증관리센터에서 발급한 인증서의\n신뢰를 제거 / 복구하는 프로그램입니다.";
+            resStr[STR_MSG_PANEL_BUTTONS] = "관리 패널";
+            resStr[STR_MSG_BUTTON_DELETE_CERT] = "제거";
+            resStr[STR_MSG_BUTTON_RECOVER_CERT] = "복구";
         }
     }
 }

@@ -94,6 +94,7 @@ namespace NoGPKI
         public MainWindow()
         {
             strRes.setLanguage("kor");
+
             if (!VerifyIsGPKI())
             {
                 deleteAndOutputGPKI();
@@ -107,6 +108,12 @@ namespace NoGPKI
             }
 
             InitializeComponent();
+
+            // fixed ui text by lang
+            noGpkiInfo.Text = strRes.getStr(ResStrings.STR_MSG_PRG_INFO);
+            grpPanel.Header = strRes.getStr(ResStrings.STR_MSG_PANEL_BUTTONS);
+            deleteCert.Content = strRes.getStr(ResStrings.STR_MSG_BUTTON_DELETE_CERT);
+            recoverCert.Content = strRes.getStr(ResStrings.STR_MSG_BUTTON_RECOVER_CERT);
 
             // empty statusLabel on init;
             statusLabel.Content = "";
