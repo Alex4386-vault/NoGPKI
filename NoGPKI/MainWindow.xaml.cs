@@ -93,7 +93,7 @@ namespace NoGPKI
 
         public MainWindow()
         {
-            strRes.setLanguage("kor");
+            strRes.setLanguage(System.Globalization.CultureInfo.CurrentUICulture.ThreeLetterISOLanguageName);
 
             if (!VerifyIsGPKI())
             {

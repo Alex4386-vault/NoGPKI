@@ -44,7 +44,36 @@ namespace NoGPKI
 
         public ResStrings()
         {
-            
+            resStr[STR_ERR_MOUNT_FAIL] = "로컬 컴퓨터의 인증서 불신목록 RW 마운트 실패";
+            resStr[STR_ERR_NOT_AUTHORIZED] = "오류: 권한 부족";
+            resStr[STR_MSG_PARTIAL_DISTRUST] = "GPKI인증서를 불신, 일부만 적용됨";
+            resStr[STR_MSG_READY_FOR_CMD] = "준비 완료! 명령만 주세요!";
+            resStr[STR_MSG_FULL_DISTRUST] = "비밀키 일치 GPKI인증서 불신중";
+            resStr[STR_MSG_FULLLY_TRUSTED] = "GPKI인증서를 신뢰하고 있음";
+            resStr[STR_MSG_ABNORMALITY_FOUND] = "뭔가 이상해요! README를 읽어봐요!";
+            resStr[STR_ERR_MD5_CHECK_FAIL] = "MD5 체크섬 검사 실패";
+            resStr[STR_ERR_VALIDATION_FAIL] = "오류: 유효성 검사 실패";
+            resStr[STR_MSG_CHECK_FILE_IS_THERE] = "다음 경로에 파일이 있는지 확인 해 주시기 바랍니다.\n있다면, 파일이 손상된것 같습니다.\n\n{0}";
+            resStr[STR_MSG_CHECK_TRUST] = "GPKI 인증서 신뢰 확인";
+            resStr[STR_MSG_CONFIRM_TRUST] = "정말로 인증서를 신뢰하시겠습니까?";
+            resStr[STR_MSG_CHECKING_CHECKSUM] = "GPKI 인증서 체크섬 검사 중";
+            resStr[STR_ERR_CHECKSUM_FAIL] = "GPKI 인증서 체크섬 검사 실패!";
+            resStr[STR_MSG_PROCESS_TRUST] = "GPKI 인증서 신뢰 시작";
+            resStr[STR_MSG_TRUSTING_IN] = "{0}에서 인증서 신뢰중";
+            resStr[STR_MSG_COMPLETED_TRUSTING] = "GPKI 인증서 신뢰처리 완료";
+            resStr[STR_ERR_WHILE_TRUST] = "GPKI 인증서 신뢰중 예외 발생! ({0})";
+            resStr[STR_MSG_CANCELLED_TRUSTING] = "GPKI 인증서 신뢰 취소";
+            resStr[STR_MSG_CHECK_DISTRUST] = "GPKI 인증서 불신 확인";
+            resStr[STR_MSG_CONFIRM_DISTRUST] = "정말로 인증서를 불신하시겠습니까?";
+            resStr[STR_MSG_PROCESS_DISTRUST] = "GPKI 인증서 불신 시작";
+            resStr[STR_MSG_DISTRUSTING_IN] = "{0}에 인증서 불신중";
+            resStr[STR_MSG_COMPLETED_DISTRUSTING] = "GPKI 인증서 불신 완료";
+            resStr[STR_ERR_WHILE_DISTRUST] = "GPKI 인증서 불신중 예외 발생! ({0})";
+            resStr[STR_MSG_CANCELLED_DISTRUSTING] = "GPKI 인증서 불신 취소";
+            resStr[STR_MSG_PRG_INFO] = "이 프로그램은 정부의 행정전자서명\n인증관리센터에서 발급한 인증서의\n신뢰를 제거 / 복구하는 프로그램입니다.";
+            resStr[STR_MSG_PANEL_BUTTONS] = "관리 패널";
+            resStr[STR_MSG_BUTTON_DELETE_CERT] = "제거";
+            resStr[STR_MSG_BUTTON_RECOVER_CERT] = "복구";
         }
 
         // CultureInfo.ThreeLetterISOLanguage 를 이용한 시스템 UI 언어 판독
