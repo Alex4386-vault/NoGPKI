@@ -81,7 +81,7 @@ namespace NoGPKI
             }
         }
         
-        private string getEntry(int strNo)
+        public string getStr(int strNo)
         {
             return this.resStr[strNo];
         }
@@ -100,7 +100,7 @@ namespace NoGPKI
             resStr[STR_MSG_ABNORMALITY_FOUND] = "뭔가 이상해요! README를 읽어봐요!";
             resStr[STR_ERR_MD5_CHECK_FAIL] = "MD5 체크섬 검사 실패";
             resStr[STR_ERR_VALIDATION_FAIL] = "오류: 유효성 검사 실패";
-            resStr[STR_MSG_CHECK_FILE_IS_THERE] = "실행 경로아래에 assets\\gpkiroot.cer 파일이 있는지 확인 해 주시기 바랍니다.\n있다면, 파일이 손상된것 같습니다.";
+            resStr[STR_MSG_CHECK_FILE_IS_THERE] = "다음 경로에 파일이 있는지 확인 해 주시기 바랍니다.\n있다면, 파일이 손상된것 같습니다.\n\n{0}";
             resStr[STR_MSG_CHECK_TRUST] = "GPKI 인증서 신뢰 확인";
             resStr[STR_MSG_CONFIRM_TRUST] = "정말로 인증서를 신뢰하시겠습니까?";
             resStr[STR_MSG_CHECKING_CHECKSUM] = "GPKI 인증서 체크섬 검사 중";
