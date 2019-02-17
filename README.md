@@ -174,7 +174,7 @@ These are the wildcard certificates at the second-level TLDs, which affects user
 
 * \*.co.kr (Wildcard Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)
   
-Spreadsheet data of misissued certificates until 2018-03-25: [여기](https://docs.google.com/spreadsheets/d/1gsaZcvLY0vwe2humZn_3E3y89huqjPyS_syTHQCqy1Q/edit?usp=sharing)
+Spreadsheet data of misissued certificates until 2018-03-25: [Here](https://docs.google.com/spreadsheets/d/1gsaZcvLY0vwe2humZn_3E3y89huqjPyS_syTHQCqy1Q/edit?usp=sharing)
 
 Another Lists of Misissued Certificates: [1](https://bugzilla.mozilla.org/show_bug.cgi?id=1377389#c32) [2](https://bugzilla.mozilla.org/show_bug.cgi?id=1377389#c33)  
 
