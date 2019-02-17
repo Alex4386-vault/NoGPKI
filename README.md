@@ -39,12 +39,12 @@ Distrusts GPKI Root CA Certificate because their security and certificate manage
 * www.test1111.co.kr (DNS Lookup 결과 아예 할당된 아이피 없음, 부정 발급.)
 * www.*.posan.ms.kr (중간에 들어간 와일드카드, 가이드라인 위반, 부정 발급.)
 * e-csinfo.*.go.kr (중간에 들어간 와일드카드, 가이드라인 위반, 부정 발급.)
-* 210.178.100.164 (아이피 주소에 대한 인증서 발급, 가이드라인 위반, 부정 발급.)
-* 211.206.120.182 (아이피 주소에 대한 인증서 발급, 가이드라인 위반, 부정 발급.)
-* 27.101.205.4 (아이피 주소에 대한 인증서 발급, 가이드라인 위반, 부정 발급.)
-* 61.108.124.4 (아이피 주소에 대한 인증서 발급, 가이드라인 위반, 부정 발급.)
-* 210.179.139.131 (아이피 주소에 대한 인증서 발급, 가이드라인 위반, 부정 발급.)
-* 27.101.119.206 (아이피 주소에 대한 인증서 발급, 가이드라인 위반, 부정 발급.)
+* 210.178.100.164 (유동 아이피 주소에 대한 인증서 발급, 가이드라인 위반, 부정 발급.)
+* 211.206.120.182 (유동 아이피 주소에 대한 인증서 발급, 가이드라인 위반, 부정 발급.)
+* 27.101.205.4 (아이피 주소에 대한 인증서 발급, 국가정보자원관리원에 할당됨, 유동아이피 할당일경우 가이드라인 위반이며 부정 발급.)
+* 61.108.124.4 (유동 아이피 주소에 대한 인증서 발급, 가이드라인 위반, 부정 발급.)
+* 210.179.139.131 (유동 아이피 주소에 대한 인증서 발급, 가이드라인 위반, 부정 발급.)
+* 27.101.119.206 (아이피 주소에 대한 인증서 발급, 국가정보자원관리원에 할당됨, 유동아이피 할당일경우 가이드라인 위반이며 부정 발급.)
 * urk ([당연히] 존재하지도 않는 도메인, 이건 대체 뭐지..... 부정 발급)
 * eais ([당연히] 존재하지도 않는 도메인, 이건 대체 뭐지..... 부정 발급)
 * chs.cdc (존재하지도 않는 TLD, 부정 발급)
@@ -74,7 +74,7 @@ Distrusts GPKI Root CA Certificate because their security and certificate manage
 * *.es.kr (second-level TLD에 대한 와일드카드 인증서 발급, 심각한 부정 발급, 루트CA 인증서 권한 남용)
 * *.go.kr (second-level TLD에 대한 와일드카드 인증서 발급, 심각한 부정 발급, 루트CA 인증서 권한 남용)  
   
-***co.kr에 대한 부정 발급 내용***  
+***\*.co.kr에 대한 부정 발급 내용***  
 
 [crt.sh 8169164](https://crt.sh/?id=8169164)  
 [crt.sh 6990343](https://crt.sh/?id=6990343)  
@@ -131,12 +131,12 @@ According to those bug threads, GPKI CARoot Certificate has been misissued certi
 * www.test1111.co.kr (there is no any single record on this domain, misissued.)
 * www.\*.posan.ms.kr (wildcard in the middle, violation of CARoot Guidelines, Misissued)
 * e-csinfo.\*.go.kr (wildcard in the middle, violation of CARoot Guidelines, Misissued)
-* 210.178.100.164 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
-* 211.206.120.182 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
-* 27.101.205.4 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
-* 61.108.124.4 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
-* 210.179.139.131 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
-* 27.101.119.206 (Certificate issued for IP Address, violation of CARoot Guidelines, Misissued)
+* 210.178.100.164 (Certificate issued for private IP Address, violation of CARoot Guidelines, Misissued)
+* 211.206.120.182 (Certificate issued for private IP Address, violation of CARoot Guidelines, Misissued)
+* 27.101.205.4 (Certificate issued for public IP Address for NIRS, but they re-allocate the IP address dynamically it is violation of CARoot Guidelines and is a Misissued certificate)
+* 61.108.124.4 (Certificate issued for private IP Address, violation of CARoot Guidelines, Misissued)
+* 210.179.139.131 (Certificate issued for private IP Address, violation of CARoot Guidelines, Misissued)
+* 27.101.119.206 (Certificate issued for public IP Address for NIRS, but they re-allocate the IP address dynamically it is violation of CARoot Guidelines and is a Misissued certificate)
 * urk (Non-existent domain, Misissued)
 * eais (Non-existent domain, Misissued)
 * chs.cdc (Non-existent TLD, Misissued)
@@ -166,7 +166,7 @@ These are the wildcard certificates at the second-level TLDs, which affects user
 * \*.es.kr (Wildcard Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)
 * \*.go.kr (Wildcard Certificate issued to second-level TLD, Serious violation of CARoot Guidelines)  
   
-***Wildcard certificates issued against *.co.kr***  
+***Wildcard certificates issued against \*.co.kr***  
 
 [crt.sh 8169164](https://crt.sh/?id=8169164)  
 [crt.sh 6990343](https://crt.sh/?id=6990343)  
